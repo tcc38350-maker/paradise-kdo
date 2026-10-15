@@ -19,15 +19,13 @@
             min-height: 100vh;
         }
 
-        /* Overlay sombre pour garder une bonne lisibilité */
         .page-overlay {
-            background: rgba(4, 20, 15, 0.85);
+            background: rgba(4, 20, 15, 0.88);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
 
-        /* Barre supérieure rouge / or style rétro */
         .top-bar {
             background: linear-gradient(180deg, #991b1b 0%, #7f1d1d 100%);
             border-bottom: 2px solid #f59e0b;
@@ -39,14 +37,12 @@
             text-shadow: 1px 1px 2px #000;
         }
 
-        /* Grand Header Visuel Rétro */
         header {
             background: linear-gradient(180deg, rgba(6,78,59,0.95) 0%, rgba(2,44,34,0.95) 100%);
             border-bottom: 4px solid #f59e0b;
             box-shadow: 0 10px 25px rgba(0,0,0,0.7);
             padding: 1.5rem;
             position: relative;
-            overflow: hidden;
         }
 
         .header-banner {
@@ -55,13 +51,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: relative;
-            z-index: 10;
         }
 
-        .logo-box {
-            text-align: center;
-        }
+        .logo-box { text-align: center; }
 
         .logo-title {
             font-size: 2.8rem;
@@ -83,7 +75,6 @@
             margin-top: -5px;
         }
 
-        /* Menu de Navigation Style Rétro Buttons */
         .nav-menu {
             background: linear-gradient(180deg, #b45309 0%, #78350f 100%);
             border: 2px solid #fde047;
@@ -119,7 +110,6 @@
             text-shadow: none;
         }
 
-        /* Bannière Central Concours (façon Mafia-Cash) */
         .hero-banner {
             max-width: 1200px;
             margin: 1.25rem auto 0;
@@ -154,7 +144,6 @@
         }
         @media (max-width: 768px) { main, .hero-banner { grid-template-columns: 1fr; } }
 
-        /* Cartes de Jeux */
         .games-card {
             background: rgba(15, 23, 42, 0.9);
             border: 2px solid #059669;
@@ -180,11 +169,28 @@
             overflow: hidden;
             transition: transform 0.2s, border-color 0.2s;
             box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+            display: flex;
+            flex-direction: column;
         }
 
         .game-item:hover {
             border-color: #f59e0b;
             transform: translateY(-3px);
+        }
+
+        .game-banner-box {
+            width: 100%;
+            height: 150px;
+            background-color: #020617;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .game-banner-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
 
         .btn-play {
@@ -206,7 +212,6 @@
             text-shadow: none;
         }
 
-        /* Sidebar Styling */
         .sidebar-card {
             background: rgba(15, 23, 42, 0.9);
             border: 2px solid #059669;
@@ -215,7 +220,6 @@
             margin-bottom: 1.5rem;
         }
 
-        /* Modals */
         .modal-overlay {
             position: fixed; inset: 0;
             background: rgba(2, 6, 23, 0.9);
@@ -241,13 +245,11 @@
 
     <div class="page-overlay">
 
-        <!-- Top Bar d'informations -->
         <div class="top-bar">
             <span>Bienvenue sur Paradise-Kdo.com, la Rixe de Cadeaux du Lagon !</span> 
             <span class="ml-4 hidden sm:inline">Inscrits : 12 450 • Cadeaux Envoyés : 85 200 € • Connectés : 42</span>
         </div>
 
-        <!-- Grand Header Rétro -->
         <header>
             <div class="header-banner">
                 <div class="logo-box">
@@ -255,11 +257,9 @@
                     <p class="logo-sub">LE LAGON DES JEUX & DES CADEAUX</p>
                 </div>
 
-                <!-- Zone d'authentification ou Statistiques Joueur -->
                 <div id="auth-zone"></div>
             </div>
 
-            <!-- Menu de navigation horizontal -->
             <nav class="nav-menu">
                 <a href="#" class="nav-btn active">Accueil</a>
                 <a href="#" class="nav-btn">Nouveautés</a>
@@ -270,7 +270,6 @@
             </nav>
         </header>
 
-        <!-- Bannière Concours / Événement Central -->
         <div class="hero-banner">
             <div>
                 <span class="bg-amber-500 text-slate-950 font-black text-xs px-2.5 py-1 rounded uppercase">Événement du Mois</span>
@@ -289,9 +288,7 @@
             </div>
         </div>
 
-        <!-- Contenu Principal -->
         <main>
-            <!-- Colonne de Gauche : Catalogue des jeux -->
             <div class="games-card">
                 <div class="games-header">
                     <h2 class="font-black text-amber-400 uppercase tracking-wide">🎮 JEUX GRATUITS DU LAGON</h2>
@@ -301,52 +298,60 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <!-- Grille Coco -->
                     <div class="game-item">
-                        <div class="h-36 bg-slate-950 overflow-hidden relative">
-                            <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover opacity-80" alt="Grille Coco">
+                        <div class="game-banner-box">
+                            <img src="/images/grille-coco.jpg" alt="Grille Coco" onerror="this.onerror=null;this.src='https://placehold.co/600x300/065f46/34d399?text=Grille+Coco';">
                             <span class="absolute top-2 left-2 bg-amber-500 text-slate-950 font-black text-[10px] px-2 py-0.5 rounded uppercase">Grattage</span>
                         </div>
-                        <div class="p-3">
-                            <h3 class="font-bold text-white text-base">🥥 Grille Coco</h3>
-                            <p class="text-xs text-slate-300 mt-1 mb-3">Grattez et trouvez 3 symboles identiques pour empocher le jackpot.</p>
+                        <div class="p-3 flex-1 flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-white text-base">🥥 Grille Coco</h3>
+                                <p class="text-xs text-slate-300 mt-1 mb-3">Grattez et trouvez 3 symboles identiques pour empocher le jackpot.</p>
+                            </div>
                             <button onclick="openGrilleCocoModal()" class="btn-play">Jouer (1 Ticket) 🎟️</button>
                         </div>
                     </div>
 
                     <!-- Roue du Lagon -->
                     <div class="game-item">
-                        <div class="h-36 bg-slate-950 overflow-hidden relative">
-                            <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover opacity-80" alt="Roue du Lagon">
+                        <div class="game-banner-box">
+                            <img src="/images/roue-lagon.jpg" alt="Roue du Lagon" onerror="this.onerror=null;this.src='https://placehold.co/600x300/0369a1/38bdf8?text=Roue+du+Lagon';">
                             <span class="absolute top-2 left-2 bg-sky-500 text-slate-950 font-black text-[10px] px-2 py-0.5 rounded uppercase">Roue Flash</span>
                         </div>
-                        <div class="p-3">
-                            <h3 class="font-bold text-white text-base">🎡 Roue du Lagon</h3>
-                            <p class="text-xs text-slate-300 mt-1 mb-3">Tournez la roue mystique et multipliez vos gain de points instantanément.</p>
+                        <div class="p-3 flex-1 flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-white text-base">🎡 Roue du Lagon</h3>
+                                <p class="text-xs text-slate-300 mt-1 mb-3">Tournez la roue mystique et multipliez vos gains de points instantanément.</p>
+                            </div>
                             <button onclick="playGame('Roue du Lagon')" class="btn-play">Jouer (1 Ticket) 🎟️</button>
                         </div>
                     </div>
 
                     <!-- Trésor Tiki -->
                     <div class="game-item">
-                        <div class="h-36 bg-slate-950 overflow-hidden relative">
-                            <img src="https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover opacity-80" alt="Trésor Tiki">
+                        <div class="game-banner-box">
+                            <img src="/images/tresor-tiki.jpg" alt="Trésor Tiki" onerror="this.onerror=null;this.src='https://placehold.co/600x300/581c87/c084fc?text=Tresor+Tiki';">
                             <span class="absolute top-2 left-2 bg-purple-500 text-slate-950 font-black text-[10px] px-2 py-0.5 rounded uppercase">Jeu Flash</span>
                         </div>
-                        <div class="p-3">
-                            <h3 class="font-bold text-white text-base">🗿 Trésor Tiki</h3>
-                            <p class="text-xs text-slate-300 mt-1 mb-3">Choisissez le bon totem parmi la jungle et découvrez le coffre caché.</p>
+                        <div class="p-3 flex-1 flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-white text-base">🗿 Trésor Tiki</h3>
+                                <p class="text-xs text-slate-300 mt-1 mb-3">Choisissez le bon totem parmi la jungle et découvrez le coffre caché.</p>
+                            </div>
                             <button onclick="playGame('Trésor Tiki')" class="btn-play">Jouer (1 Ticket) 🎟️</button>
                         </div>
                     </div>
 
                     <!-- Loto Cocktail -->
                     <div class="game-item">
-                        <div class="h-36 bg-slate-950 overflow-hidden relative">
-                            <img src="https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover opacity-80" alt="Loto Cocktail">
+                        <div class="game-banner-box">
+                            <img src="/images/loto-cocktail.jpg" alt="Loto Cocktail" onerror="this.onerror=null;this.src='https://placehold.co/600x300/be185d/f472b6?text=Loto+Cocktail';">
                             <span class="absolute top-2 left-2 bg-pink-500 text-slate-950 font-black text-[10px] px-2 py-0.5 rounded uppercase">Tirage</span>
                         </div>
-                        <div class="p-3">
-                            <h3 class="font-bold text-white text-base">🍹 Loto Cocktail</h3>
-                            <p class="text-xs text-slate-300 mt-1 mb-3">Validez vos numéros chance du jour et participez au grand tirage.</p>
+                        <div class="p-3 flex-1 flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-white text-base">🍹 Loto Cocktail</h3>
+                                <p class="text-xs text-slate-300 mt-1 mb-3">Validez vos numéros chance du jour et participez au grand tirage.</p>
+                            </div>
                             <button onclick="playGame('Loto Cocktail')" class="btn-play">Jouer (1 Ticket) 🎟️</button>
                         </div>
                     </div>
@@ -355,7 +360,6 @@
                 <div id="game-result" class="mt-4 text-center text-amber-400 font-bold text-sm"></div>
             </div>
 
-            <!-- Colonne de Droite : Sidebar Classement & Boutique -->
             <div class="sidebar">
                 <div class="sidebar-card">
                     <h3 class="font-black text-amber-400 uppercase text-sm border-b border-emerald-600/50 pb-2 mb-3">🥇 CLASSEMENT DU MOIS</h3>
@@ -390,7 +394,6 @@
         <div class="modal-container">
             <button onclick="closeAuthModal()" class="modal-close"><i class="fas fa-times"></i></button>
 
-            <!-- Connexion -->
             <form id="login-form" onsubmit="submitLogin(event)">
                 <h2 class="text-2xl font-black text-amber-400 text-center mb-4 uppercase">🔑 CONNEXION</h2>
                 <div id="login-error" class="hidden text-xs text-red-400 bg-red-950/80 p-2 rounded mb-3 text-center font-bold border border-red-500"></div>
@@ -410,7 +413,6 @@
                 </p>
             </form>
 
-            <!-- Inscription -->
             <form id="register-form" class="hidden" onsubmit="submitRegister(event)">
                 <h2 class="text-2xl font-black text-amber-400 text-center mb-4 uppercase">🌴 INSCRIPTION</h2>
                 <div id="reg-error" class="hidden text-xs text-red-400 bg-red-950/80 p-2 rounded mb-3 text-center font-bold border border-red-500"></div>
