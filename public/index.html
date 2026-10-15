@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paradise-Kdo - Jeux & Cadeaux du Lagon</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap');
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: #0b1329;
+            color: #f8fafc;
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: #064e3b;
+            border-bottom: 2px solid #059669;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo-area { display: flex; align-items: center; gap: 0.75rem; }
+        .logo-title { font-size: 1.5rem; font-weight: 900; color: #fde047; letter-spacing: 0.05em; }
+        .stats-area { display: flex; gap: 1rem; font-size: 0.875rem; font-weight: 600; align-items: center; }
+        .stat-badge { background-color: #022c22; padding: 0.5rem 1rem; border-radius: 0.5rem; border: 1px solid #047857; color: #fff; }
+        .vip-badge { background-color: #f59e0b; color: #0f172a; padding: 0.5rem 1rem; border-radius: 0.5rem; font-weight: bold; }
+
+        .btn-auth {
+            background-color: #10b981;
+            color: #0f172a;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-auth:hover { background-color: #34d399; }
+
+        .news-ticker {
+            background-color: #1e293b;
+            border-bottom: 1px solid #334155;
+            padding: 0.6rem 1.5rem;
+            font-size: 0.8rem;
+            color: #fde047;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        main {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+            flex: 1;
+        }
+        @media (max-width: 768px) { main { grid-template-columns: 1fr; } }
+
+        .games-card {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 1rem;
+            padding: 1.25rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        }
+        .games-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 0.75rem;
+        }
+        .games-header h2 { font-size: 1rem; font-weight: bold; color: #34d399; }
+        .free-badge { font-size: 0.75rem; background-color: #065f46; color: #a7f3d0; padding: 0.25rem 0.75rem; border-radius: 9999px; font-weight: 600; }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.25rem;
+        }
+        @media (max-width: 640px) { .games-grid { grid-template-columns: 1fr; } }
+
+        .game-item {
+            background-color: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .game-item:hover { border-color: #10b981; transform: translateY(-2px); }
+
+        .game-banner-box {
+            width: 100%;
+            height: 150px;
+            background-color: #020617;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .game-banner-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .game-content {
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            justify-content: space-between;
+        }
+        .tag { font-size: 0.65rem; font-weight: bold; padding: 0.15rem 0.5rem; border-radius: 0.25rem; display: inline-block; margin-bottom: 0.5rem; }
+        .tag-amber { color: #fbbf24; background-color: rgba(251, 191, 36, 0.1); }
+        .tag-sky { color: #38bdf8; background-color: rgba(56, 189, 248, 0.1); }
+        .tag-purple { color: #c084fc; background-color: rgba(192, 132, 252, 0.1); }
+        .tag-pink { color: #f472b6; background-color: rgba(244, 114, 182, 0.1); }
+
+        .game-item h3 { font-size: 0.95rem; font-weight: bold; color: #fff; margin-bottom: 0.25rem; }
+        .game-item p { font-size: 0.75rem; color: #94a3b8; margin-bottom: 1rem; line-height: 1.3; }
+
+        .btn-play {
+            width: 100%;
+            background-color: #059669;
+            color: white;
+            font-weight: bold;
+            font-size: 0.8rem;
+            padding: 0.65rem;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            text-decoration: none;
+            text-align: center;
+            display: block;
+        }
+        .btn-play:hover { background-color: #10b981; }
+
+        .sidebar { display: flex; flex-direction: column; gap: 1.5rem; }
+        .sidebar-card { background-color: #1e293b; border: 1px solid #334155; border-radius: 1rem; padding: 1.25rem; }
+        .sidebar-card h3 { font-size: 0.95rem; font-weight: bold; color: #fbbf24; margin-bottom: 0.75rem; }
+        .rank-row { display: flex; justify-content: space-between; align-items: center; background-color: #0f172a; padding: 0.6rem 0.75rem; border-radius: 0.5rem; border: 1px solid #334155; font-size: 0.8rem; margin-bottom: 0.5rem; }
+        .rank-pts { color: #34d399; font-weight: bold; }
+
+        .shop-box {
+            background: linear-gradient(135deg, #d97706, #b45309);
+            border-radius: 1rem;
+            padding: 1.25rem;
+            color: #0f172a;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+        }
+        .shop-box h3 { font-size: 1rem; font-weight: 900; margin-bottom: 0.25rem; color: #0f172a; }
+        .shop-box p { font-size: 0.75rem; color: #fef3c7; margin-bottom: 1rem; }
+        .shop-btn { width: 100%; background-color: #0f172a; color: #fde047; font-weight: bold; border: none; padding: 0.6rem; border-radius: 0.5rem; cursor: pointer; }
+        .shop-btn:hover { background-color: #1e293b; }
+
+        #game-result { text-align: center; font-weight: bold; color: #fbbf24; font-size: 0.85rem; margin-top: 1rem; }
+
+        /* Modals */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(2, 6, 23, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-container {
+            background: radial-gradient(circle at center, #064e3b 0%, #022c22 100%);
+            border: 2px solid #34d399;
+            border-radius: 1.5rem;
+            width: 100%;
+            max-width: 440px;
+            padding: 1.75rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            position: relative;
+        }
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(52, 211, 153, 0.4);
+            color: #34d399;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        canvas { touch-action: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area">
+            <span style="font-size: 1.75rem;">🌴</span>
+            <span class="logo-title">PARADISE-KDO</span>
+        </div>
+        
+        <div id="auth-zone"></div>
+    </header>
+
+    <div class="news-ticker">
+        <span style="color: #34d399; font-weight: bold;">📢 DERNIERS GAINS :</span> 
+        Timothée a gagné 100 points sur la Grille Coco • Julie974 a retiré 10€ PayPal • Kévin_92 a gagné 50 points sur le Loto Lagon
+    </div>
+
+    <main>
+        <div class="games-card">
+            <div class="games-header">
+                <h2>🎁 Profitez de vos parties gratuites chaque jour !</h2>
+                <span class="free-badge">10 offertes/jour</span>
+            </div>
+
+            <div class="games-grid">
+                <div class="game-item">
+                    <div class="game-banner-box">
+                        <img src="/images/grille-coco.jpg" alt="Grille Coco" onerror="this.onerror=null;this.src='https://placehold.co/600x300/065f46/34d399?text=Grille+Coco';">
+                    </div>
+                    <div class="game-content">
+                        <div>
+                            <span class="tag tag-amber">Grattage</span>
+                            <h3>🥥 Grille Coco</h3>
+                            <p>Grattez et trouvez 3 symboles identiques pour remporter le magot.</p>
+                        </div>
+                        <button onclick="openGrilleCocoModal()" class="btn-play">Jouer (1 Ticket) 🎟️</button>
+                    </div>
+                </div>
+
+                <div class="game-item">
+                    <div class="game-banner-box">
+                        <img src="/images/roue-lagon.jpg" alt="Roue du Lagon" onerror="this.onerror=null;this.src='https://placehold.co/600x300/0369a1/38bdf8?text=Roue+du+Lagon';">
+                    </div>
+                    <div class="game-content">
+                        <div>
+                            <span class="tag tag-sky">Roue Flash</span>
+                            <h3>🎡 Roue du Lagon</h3>
+                            <p>Tentez de faire tourner la roue pour multiplier vos points.</p>
+                        </div>
+                        <button onclick="playGame('Roue du Lagon')" class="btn-play">Jouer (1 Ticket) 🎟️</button>
+                    </div>
+                </div>
+
+                <div class="game-item">
+                    <div class="game-banner-box">
+                        <img src="/images/tresor-tiki.jpg" alt="Trésor Tiki" onerror="this.onerror=null;this.src='https://placehold.co/600x300/581c87/c084fc?text=Tresor+Tiki';">
+                    </div>
+                    <div class="game-content">
+                        <div>
+                            <span class="tag tag-purple">Jeu Flash</span>
+                            <h3>🗿 Trésor Tiki</h3>
+                            <p>Choisissez le bon totem pour découvrir le trésor caché.</p>
+                        </div>
+                        <button onclick="playGame('Trésor Tiki')" class="btn-play">Jouer (1 Ticket) 🎟️</button>
+                    </div>
+                </div>
+
+                <div class="game-item">
+                    <div class="game-banner-box">
+                        <img src="/images/loto-cocktail.jpg" alt="Loto Cocktail" onerror="this.onerror=null;this.src='https://placehold.co/600x300/be185d/f472b6?text=Loto+Cocktail';">
+                    </div>
+                    <div class="game-content">
+                        <div>
+                            <span class="tag tag-pink">Tirage</span>
+                            <h3>🍹 Loto Cocktail</h3>
+                            <p>Un tirage au sort quotidien pour gagner de gros lots de points.</p>
+                        </div>
+                        <button onclick="playGame('Loto Cocktail')" class="btn-play">Jouer (1 Ticket) 🎟️</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="game-result"></div>
+        </div>
+
+        <div class="sidebar">
+            <div class="sidebar-card">
+                <h3>🏆 Top Joueurs (Ce mois)</h3>
+                <div class="rank-row">
+                    <span>🥇 1. Timothée</span>
+                    <span class="rank-pts">1180 pts</span>
+                </div>
+                <div class="rank-row">
+                    <span>🥈 2. Julie974</span>
+                    <span class="rank-pts">950 pts</span>
+                </div>
+                <div class="rank-row">
+                    <span>🥉 3. Kévin_92</span>
+                    <span class="rank-pts">820 pts</span>
+                </div>
+            </div>
+
+            <div class="shop-box">
+                <h3>🎁 La Boutique</h3>
+                <p>Échangez vos points contre des chèques cadeaux !</p>
+                <button class="shop-btn">Voir les cadeaux</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- MODAL AUTHENTIFICATION -->
+    <div id="auth-modal" class="modal-overlay">
+        <div class="modal-container">
+            <button onclick="closeAuthModal()" class="modal-close"><i class="fas fa-times"></i></button>
+
+            <!-- Mode Connexion (transformé en vrai formulaire) -->
+            <form id="login-form" onsubmit="submitLogin(event)">
+                <h2 class="text-2xl font-black text-amber-400 text-center mb-4">🔑 Connexion</h2>
+                <div id="login-error" class="hidden text-xs text-red-400 bg-red-950/50 p-2 rounded-lg mb-3 text-center font-bold"></div>
+                <div class="space-y-3">
+                    <div>
+                        <label class="text-xs font-semibold text-emerald-200">Pseudo ou Email</label>
+                        <input type="text" id="login-input" autocomplete="username" class="w-full bg-slate-900 border border-emerald-500/40 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-amber-400 mt-1" value="Timothée" placeholder="Ex: Timothée">
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold text-emerald-200">Mot de passe</label>
+                        <input type="password" id="login-pass" autocomplete="current-password" class="w-full bg-slate-900 border border-emerald-500/40 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-amber-400 mt-1" value="pass" placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="w-full bg-amber-400 hover:bg-amber-500 text-slate-950 font-black p-2.5 rounded-lg text-sm uppercase transition mt-2 cursor-pointer">Se connecter</button>
+                </div>
+                <p class="text-xs text-center text-slate-400 mt-4">
+                    Pas encore de compte ? <a href="#" onclick="toggleAuthMode('register'); return false;" class="text-emerald-400 font-bold hover:underline">Inscris-toi !</a>
+                </p>
+            </form>
+
+            <!-- Mode Inscription (transformé en vrai formulaire) -->
+            <form id="register-form" class="hidden" onsubmit="submitRegister(event)">
+                <h2 class="text-2xl font-black text-amber-400 text-center mb-4">🌴 Inscription</h2>
+                <div id="reg-error" class="hidden text-xs text-red-400 bg-red-950/50 p-2 rounded-lg mb-3 text-center font-bold"></div>
+                <div class="space-y-3">
+                    <div>
+                        <label class="text-xs font-semibold text-emerald-200">Pseudo</label>
+                        <input type="text" id="reg-pseudo" autocomplete="username" class="w-full bg-slate-900 border border-emerald-500/40 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-amber-400 mt-1" placeholder="Votre pseudo">
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold text-emerald-200">Adresse Email</label>
+                        <input type="email" id="reg-email" autocomplete="email" class="w-full bg-slate-900 border border-emerald-500/40 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-amber-400 mt-1" placeholder="exemple@mail.com">
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold text-emerald-200">Mot de passe</label>
+                        <input type="password" id="reg-pass" autocomplete="new-password" class="w-full bg-slate-900 border border-emerald-500/40 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-amber-400 mt-1" placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black p-2.5 rounded-lg text-sm uppercase transition mt-2 cursor-pointer">Créer mon compte (10 Tickets Offerts 🎉)</button>
+                </div>
+                <p class="text-xs text-center text-slate-400 mt-4">
+                    Déjà inscrit ? <a href="#" onclick="toggleAuthMode('login'); return false;" class="text-amber-400 font-bold hover:underline">Connecte-toi !</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Grille Coco -->
+    <div id="grille-coco-modal" class="modal-overlay">
+        <div class="modal-container">
+            <button onclick="closeGrilleCocoModal()" class="modal-close"><i class="fas fa-times"></i></button>
+            <div class="text-center mb-4">
+                <div class="inline-block bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[10px] font-bold px-3 py-1 rounded-full mb-1">
+                    N° #2026-COCO-88
+                </div>
+                <h2 class="text-2xl font-black text-amber-400 uppercase tracking-wide drop-shadow-md">
+                    🥥 GRILLE COCO 🥥
+                </h2>
+            </div>
+            <div class="relative w-full aspect-[16/9] bg-slate-950 rounded-xl border-2 border-amber-400/60 overflow-hidden shadow-inner flex items-center justify-center">
+                <div id="scratch-underlay" class="absolute inset-0 grid grid-cols-3 gap-2 p-3 bg-emerald-900/30 items-center justify-center"></div>
+                <canvas id="scratch-canvas" class="absolute inset-0 w-full h-full z-10"></canvas>
+            </div>
+            <div class="mt-3 text-center">
+                <div class="w-full bg-slate-900/80 rounded-full h-2 mb-1.5 overflow-hidden border border-emerald-500/30">
+                    <div id="scratch-progress-bar" class="bg-gradient-to-r from-amber-500 to-emerald-400 h-2 rounded-full w-0 transition-all duration-200"></div>
+                </div>
+                <p id="scratch-hint" class="text-[11px] font-semibold text-emerald-300">👆 Grattez la surface dorée !</p>
+            </div>
+            <div id="result-box" class="hidden mt-3 p-3 rounded-xl bg-amber-500/20 border border-amber-400/50 text-center animate-bounce">
+                <h3 id="result-title" class="text-base font-black text-amber-300">🎉 JACKPOT COCO !</h3>
+                <button onclick="resetTicket()" class="mt-2.5 w-full bg-gradient-to-r from-amber-500 to-emerald-500 text-slate-950 font-black py-2 px-3 rounded-xl text-[11px] uppercase">Rejouer (1 Ticket 🎟️)</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = localStorage.getItem('paradise_user') || null;
+        let userPoints = 0;
+        let userTickets = 0;
+
+        function renderHeaderUI() {
+            const authZone = document.getElementById('auth-zone');
+            if (currentUser) {
+                authZone.innerHTML = `
+                    <div class="stats-area">
+                        <span class="text-xs font-bold text-amber-300">👤 ${currentUser}</span>
+                        <span class="stat-badge">🪙 <span id="user-points">${userPoints}</span> Pts</span>
+                        <span class="stat-badge">
+                            🎟️ <span id="user-tickets">${userTickets}</span> Tickets
+                            <button type="button" id="btn-add-ticket" style="background: #fde047; color: #0f172a; border: none; border-radius: 4px; padding: 2px 8px; margin-left: 6px; font-weight: 900; cursor: pointer; font-size: 0.85rem;">+</button>
+                        </span>
+                        <button onclick="logout()" class="text-xs text-red-400 hover:underline font-bold ml-2 cursor-pointer">Déconnexion</button>
+                    </div>
+                `;
+                bindAddTicketEvent();
+            } else {
+                authZone.innerHTML = `
+                    <button onclick="openAuthModal('login')" class="btn-auth">Connexion / Inscription</button>
+                `;
+            }
+        }
+
+        function bindAddTicketEvent() {
+            const btn = document.getElementById('btn-add-ticket');
+            if (btn) {
+                btn.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    try {
+                        const res = await fetch('/api/add-ticket', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ username: currentUser })
+                        });
+                        const data = await res.json();
+                        if(data.success) {
+                            userPoints = data.user.points;
+                            userTickets = data.user.tickets;
+                            updateStatsUI();
+                        }
+                    } catch(err) { console.error("Erreur :", err); }
+                });
+            }
+        }
+
+        async function fetchUser() {
+            if (!currentUser) return;
+            try {
+                const res = await fetch(`/api/user/${encodeURIComponent(currentUser)}`);
+                const data = await res.json();
+                if (data.points !== undefined) {
+                    userPoints = data.points;
+                    userTickets = data.tickets;
+                    renderHeaderUI();
+                } else {
+                    logout();
+                }
+            } catch(err) { console.error("Erreur :", err); }
+        }
+
+        function updateStatsUI() {
+            const ptsEl = document.getElementById('user-points');
+            const tktEl = document.getElementById('user-tickets');
+            if (ptsEl) ptsEl.innerText = userPoints;
+            if (tktEl) tktEl.innerText = userTickets;
+        }
+
+        const authModal = document.getElementById('auth-modal');
+        function openAuthModal(mode = 'login') {
+            toggleAuthMode(mode);
+            authModal.classList.add('active');
+        }
+        function closeAuthModal() {
+            authModal.classList.remove('active');
+        }
+        function toggleAuthMode(mode) {
+            document.getElementById('login-error').classList.add('hidden');
+            document.getElementById('reg-error').classList.add('hidden');
+            if (mode === 'login') {
+                document.getElementById('login-form').classList.remove('hidden');
+                document.getElementById('register-form').classList.add('hidden');
+            } else {
+                document.getElementById('login-form').classList.add('hidden');
+                document.getElementById('register-form').classList.remove('hidden');
+            }
+        }
+
+        async function submitLogin(e) {
+            e.preventDefault();
+            const emailOrPseudo = document.getElementById('login-input').value;
+            const password = document.getElementById('login-pass').value;
+            const errBox = document.getElementById('login-error');
+
+            try {
+                const res = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ emailOrPseudo, password })
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    currentUser = data.user.pseudo;
+                    localStorage.setItem('paradise_user', currentUser);
+                    userPoints = data.user.points;
+                    userTickets = data.user.tickets;
+                    closeAuthModal();
+                    renderHeaderUI();
+                } else {
+                    errBox.innerText = data.message;
+                    errBox.classList.remove('hidden');
+                }
+            } catch(err) {
+                console.error("Erreur login:", err);
+            }
+        }
+
+        async function submitRegister(e) {
+            e.preventDefault();
+            const pseudo = document.getElementById('reg-pseudo').value;
+            const email = document.getElementById('reg-email').value;
+            const password = document.getElementById('reg-pass').value;
+            const errBox = document.getElementById('reg-error');
+
+            try {
+                const res = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ pseudo, email, password })
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    currentUser = data.user.pseudo;
+                    localStorage.setItem('paradise_user', currentUser);
+                    userPoints = data.user.points;
+                    userTickets = data.user.tickets;
+                    closeAuthModal();
+                    renderHeaderUI();
+                } else {
+                    errBox.innerText = data.message;
+                    errBox.classList.remove('hidden');
+                }
+            } catch(err) {
+                console.error("Erreur register:", err);
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('paradise_user');
+            renderHeaderUI();
+            openAuthModal('login');
+        }
+
+        // Logique du jeu Grille Coco
+        const modal = document.getElementById('grille-coco-modal');
+        let isScratching = false, isFinished = false, activeCombination = null;
+        const possibleCombos = [
+            { symbols: ['🥥', '🥥', '🥥'], name: 'Trio de Noix de Coco', points: 100 },
+            { symbols: ['🍹', '🍹', '🍹'], name: 'Trio de Cocktails', points: 50 },
+            { symbols: ['🌺', '🌺', '🌺'], name: 'Trio d\'Hibiscus', points: 25 }
+        ];
+
+        const canvas = document.getElementById('scratch-canvas');
+        const ctx = canvas.getContext('2d');
+        const progressBar = document.getElementById('scratch-progress-bar');
+        const scratchHint = document.getElementById('scratch-hint');
+        const resultBox = document.getElementById('result-box');
+
+        async function openGrilleCocoModal() {
+            if (!currentUser) {
+                alert("Veuillez vous connecter pour jouer !");
+                openAuthModal('login');
+                return;
+            }
+            try {
+                const res = await fetch('/api/play', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: currentUser, gameType: 'Grille Coco' })
+                });
+                const data = await res.json();
+                if(data.success) {
+                    userPoints = data.user.points;
+                    userTickets = data.user.tickets;
+                    updateStatsUI();
+                    modal.classList.add('active');
+                    resetTicketState();
+                } else {
+                    alert(data.message);
+                }
+            } catch(err) { console.error("Erreur :", err); }
+        }
+
+        function closeGrilleCocoModal() {
+            modal.classList.remove('active');
+            fetchUser();
+        }
+
+        function initCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            if (rect.width === 0 || rect.height === 0) return;
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+            ctx.fillStyle = '#d97706';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#451a03';
+            ctx.font = '900 14px Poppins, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('✨ GRATTEZ ICI ✨', canvas.width / 2, canvas.height / 2);
+        }
+
+        function generateTicket() {
+            activeCombination = possibleCombos[Math.floor(Math.random() * possibleCombos.length)];
+            const underlay = document.getElementById('scratch-underlay');
+            underlay.innerHTML = '';
+            activeCombination.symbols.forEach((sym) => {
+                const cell = document.createElement('div');
+                cell.className = 'bg-slate-900/90 border border-emerald-500/40 rounded-lg aspect-square flex flex-col items-center justify-center p-1';
+                cell.innerHTML = `<span class="text-2xl">${sym}</span><span class="text-[9px] font-bold text-amber-400">+${activeCombination.points} Pts</span>`;
+                underlay.appendChild(cell);
+            });
+        }
+
+        function resetTicketState() {
+            isFinished = false; isScratching = false;
+            progressBar.style.width = '0%';
+            resultBox.classList.add('hidden');
+            canvas.style.display = 'block'; canvas.style.opacity = '1';
+            generateTicket();
+            setTimeout(initCanvas, 50);
+        }
+
+        async function resetTicket() {
+            if (userTickets <= 0) { alert('Tickets insuffisants !'); return; }
+            try {
+                const res = await fetch('/api/play', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: currentUser, gameType: 'Grille Coco' })
+                });
+                const data = await res.json();
+                if(data.success) {
+                    userPoints = data.user.points; userTickets = data.user.tickets;
+                    updateStatsUI(); resetTicketState();
+                } else { alert(data.message); }
+            } catch(err) { console.error("Erreur :", err); }
+        }
+
+        function scratch(e) {
+            if (!isScratching || isFinished) return;
+            e.preventDefault();
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+            const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.beginPath(); ctx.arc(x, y, 20, 0, Math.PI * 2); ctx.fill();
+
+            const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+            let transparent = 0;
+            for (let i = 3; i < pixels.length; i += 16) if (pixels[i] === 0) transparent++;
+            const percent = Math.min(100, Math.round((transparent / (pixels.length / 16)) * 100));
+            progressBar.style.width = percent + '%';
+            if (percent > 45 && !isFinished) {
+                isFinished = true;
+                canvas.style.opacity = '0';
+                setTimeout(() => canvas.style.display = 'none', 500);
+                resultBox.classList.remove('hidden');
+                document.getElementById('result-title').innerText = `🎉 GAIN : +${activeCombination.points} PTS !`;
+                fetchUser();
+            }
+        }
+
+        canvas.addEventListener('mousedown', (e) => { isScratching = true; scratch(e); });
+        window.addEventListener('mouseup', () => { isScratching = false; });
+        canvas.addEventListener('mousemove', scratch);
+        canvas.addEventListener('touchstart', (e) => { isScratching = true; scratch(e); });
+        window.addEventListener('touchend', () => { isScratching = false; });
+        canvas.addEventListener('touchmove', scratch);
+
+        async function playGame(gameName) {
+            if (!currentUser) { alert("Veuillez vous connecter !"); openAuthModal('login'); return; }
+            try {
+                const res = await fetch('/api/play', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: currentUser, gameType: gameName })
+                });
+                const data = await res.json();
+                if(data.success) {
+                    userPoints = data.user.points; userTickets = data.user.tickets;
+                    updateStatsUI();
+                    document.getElementById('game-result').innerText = `[${gameName}] ${data.message}`;
+                } else { alert(data.message); }
+            } catch(err) { console.error("Erreur :", err); }
+        }
+
+        // Lancement : si non connecté, ouvre la modale de connexion direct
+        if (!currentUser) {
+            openAuthModal('login');
+        } else {
+            fetchUser();
+        }
+        renderHeaderUI();
+    </script>
+</body>
+</html>
