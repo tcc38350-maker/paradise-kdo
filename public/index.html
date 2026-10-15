@@ -299,7 +299,7 @@
                     <!-- Grille Coco -->
                     <div class="game-item">
                         <div class="game-banner-box">
-                            <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=600&q=80" alt="Grille Coco">
+                            <img src="/images/grille-coco.jpg" alt="Grille Coco">
                             <span class="absolute top-2 left-2 bg-amber-500 text-slate-950 font-black text-[10px] px-2 py-0.5 rounded uppercase">Grattage</span>
                         </div>
                         <div class="p-3 flex-1 flex flex-col justify-between">
@@ -314,7 +314,7 @@
                     <!-- Roue du Lagon -->
                     <div class="game-item">
                         <div class="game-banner-box">
-                            <img src="https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=600&q=80" alt="Roue du Lagon">
+                            <img src="/images/roue-lagon.jpg" alt="Roue du Lagon">
                             <span class="absolute top-2 left-2 bg-sky-500 text-slate-950 font-black text-[10px] px-2 py-0.5 rounded uppercase">Roue Flash</span>
                         </div>
                         <div class="p-3 flex-1 flex flex-col justify-between">
@@ -329,7 +329,7 @@
                     <!-- Trésor Tiki -->
                     <div class="game-item">
                         <div class="game-banner-box">
-                            <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" alt="Trésor Tiki">
+                            <img src="/images/tresor-tiki.jpg" alt="Trésor Tiki">
                             <span class="absolute top-2 left-2 bg-purple-500 text-slate-950 font-black text-[10px] px-2 py-0.5 rounded uppercase">Jeu Flash</span>
                         </div>
                         <div class="p-3 flex-1 flex flex-col justify-between">
@@ -344,7 +344,7 @@
                     <!-- Loto Cocktail -->
                     <div class="game-item">
                         <div class="game-banner-box">
-                            <img src="https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80" alt="Loto Cocktail">
+                            <img src="/images/loto-cocktail.jpg" alt="Loto Cocktail">
                             <span class="absolute top-2 left-2 bg-pink-500 text-slate-950 font-black text-[10px] px-2 py-0.5 rounded uppercase">Tirage</span>
                         </div>
                         <div class="p-3 flex-1 flex flex-col justify-between">
@@ -695,7 +695,7 @@
                 isFinished = true; canvas.style.opacity = '0';
                 setTimeout(() => canvas.style.display = 'none', 500);
                 resultBox.classList.remove('hidden');
-                document.getElementById('result-title', `🎉 GAIN : +${activeCombination.points} PTS !`);
+                document.getElementById('result-title').innerText = `🎉 GAIN : +${activeCombination.points} PTS !`;
                 fetchUser();
             }
         }
