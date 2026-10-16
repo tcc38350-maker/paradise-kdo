@@ -28,7 +28,83 @@ const users = {
     }
 };
 
-// === API BACKOFFICE ADMIN ===
+// Stockage des codes de recharge générés
+const rechargeCodesDatabase = {};
+
+// Fonction pour générer une chaîne aléatoire de 15 caractères (lettres/chiffres)
+function generateRandomString(length = 15) {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+}
+
+// === API ADMIN : Génération de codes (1 à 100) ===
+app.post('/api/admin/generate-codes', (req, res) => {
+    const { type, count } = req.body; // type: 'mini' ou 'plus'
+    const numCount = parseInt(count) || 1;
+    const generatedList = [];
+
+    const prefix = (type === 'plus') ? 'para+' : 'PARA';
+
+    for (let i = 0; i < numCount; i++) {
+        const code = prefix + generateRandomString(15);
+        rechargeCodesDatabase[code] = {
+            type: type, // 'mini' ou 'plus'
+            used: false,
+            createdAt: new Date().toISOString()
+        };
+        generatedList.push(code);
+    }
+
+    res.json({
+        success: true,
+        codes: generatedList
+    });
+});
+
+// === API UTILISATEUR : Validation d'un code de recharge ===
+app.post('/api/use-recharge-code', (req, res) => {
+    const { username, code } = req.body;
+
+    if (!users[username]) {
+        return res.json({ success: false, message: "Utilisateur non trouvé." });
+    }
+
+    const trimmedCode = code ? code.trim() : "";
+
+    if (!rechargeCodesDatabase[trimmedCode]) {
+        return res.json({ success: false, message: "Code incorrect ou inexistant." });
+    }
+
+    const codeData = rechargeCodesDatabase[trimmedCode];
+
+    if (codeData.used) {
+        return res.json({ success: false, message: "Ce code a déjà été utilisé !" });
+    }
+
+    // Marquer le code comme utilisé (usage unique)
+    codeData.used = true;
+
+    // Créditer les tickets et points associés selon le type de pack
+    if (codeData.type === 'mini') {
+        users[username].tickets += 25;
+        users[username].points += 100;
+    } else if (codeData.type === 'plus') {
+        users[username].tickets += 50;
+        users[username].points += 250;
+    }
+
+    res.json({
+        success: true,
+        message: `Code validé avec succès ! ${codeData.type === 'mini' ? '+25 tickets' : '+50 tickets'} crédités.`,
+        user: users[username]
+    });
+});
+
+// === API BACKOFFICE ADMIN : Stats & Gestion ===
 app.get('/api/admin/stats', (req, res) => {
     try {
         const usersList = Object.values(users);
