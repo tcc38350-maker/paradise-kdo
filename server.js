@@ -124,6 +124,28 @@ app.get('/api/admin/stats', (req, res) => {
     }
 });
 
+// === API ADMIN : Modification manuelle complète (Points & Tickets) ===
+app.post('/api/admin/update-user', (req, res) => {
+    const { username, points, tickets } = req.body;
+    
+    if (!users[username]) {
+        return res.status(404).json({ success: false, message: "Utilisateur non trouvé." });
+    }
+
+    if (points !== undefined) {
+        users[username].points = parseInt(points) || 0;
+    }
+    if (tickets !== undefined) {
+        users[username].tickets = parseInt(tickets) || 0;
+    }
+
+    res.json({
+        success: true,
+        message: "Profil mis à jour avec succès !",
+        user: users[username]
+    });
+});
+
 app.post('/api/admin/modify-user', (req, res) => {
     const { pseudo, addPoints, addTickets } = req.body;
     if (users[pseudo]) {
