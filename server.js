@@ -6,6 +6,16 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Mot de passe admin sécurisé côté serveur (change "ton_vrai_mot_de_passe" par ce que tu veux)
+const ADMIN_PASSWORD = "ton_vrai_mot_de_passe";
+
+app.post('/api/admin/login', (req, res) => {
+    const { password } = req.body;
+    if (password === ADMIN_PASSWORD) {
+        return res.json({ success: true, token: "token_admin_autorise_2026" });
+    }
+    res.status(401).json({ success: false, message: "Mot de passe incorrect" });
+});
 // Base de données simulée en mémoire
 const users = {
     "Timothée": { 
