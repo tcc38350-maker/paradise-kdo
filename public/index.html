@@ -114,6 +114,51 @@
             text-shadow: none;
         }
 
+        /* Bandeau Défilant des Retraits (Ticker) */
+        .ticker-container {
+            background: linear-gradient(90deg, #0284c7 0%, #0369a1 50%, #0284c7 100%);
+            border-bottom: 3px solid #fbbf24;
+            border-top: 1px solid #38bdf8;
+            color: #fff;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 0.5rem 0;
+            overflow: hidden;
+            white-space: nowrap;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+        }
+
+        .ticker-label {
+            background: #fbbf24;
+            color: #0f172a;
+            font-black: 900;
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 900;
+            z-index: 10;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.3);
+        }
+
+        .ticker-wrapper {
+            display: inline-block;
+            white-space: nowrap;
+            animation: marquee 25s linear infinite;
+        }
+
+        .ticker-item {
+            display: inline-block;
+            margin-right: 3rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+
         /* Bannière Concours Tropicale */
         .hero-banner {
             max-width: 1200px;
@@ -275,6 +320,24 @@
                 <a href="#" class="nav-btn">Classement 🏆</a>
             </nav>
         </header>
+
+        <!-- BANDEAU DÉFILANT DES DERNIERS RETRAITS (TICKER) -->
+        <div class="ticker-container">
+            <div class="ticker-label"><i class="fas fa-trophy text-amber-300 mr-1"></i> DERNIERS GAINS :</div>
+            <div class="overflow-hidden flex-1 relative">
+                <div class="ticker-wrapper">
+                    <span class="ticker-item">🎉 <b>Timothée</b> a retiré <b>50€ PayPal</b> (Aujourd'hui à 02:15)</span>
+                    <span class="ticker-item">🌴 <b>Julie974</b> a gagné <b>1000 Points</b> sur la Grille Coco (Aujourd'hui à 02:02)</span>
+                    <span class="ticker-item">🎁 <b>Kévin_92</b> a commandé une <b>Carte Amazon 25€</b> (Hier à 23:45)</span>
+                    <span class="ticker-item">✨ <b>Alex_976</b> a retiré <b>20€ PayPal</b> (Hier à 22:30)</span>
+                    <!-- Duplication pour effet de boucle fluide infini -->
+                    <span class="ticker-item">🎉 <b>Timothée</b> a retiré <b>50€ PayPal</b> (Aujourd'hui à 02:15)</span>
+                    <span class="ticker-item">🌴 <b>Julie974</b> a gagné <b>1000 Points</b> sur la Grille Coco (Aujourd'hui à 02:02)</span>
+                    <span class="ticker-item">🎁 <b>Kévin_92</b> a commandé une <b>Carte Amazon 25€</b> (Hier à 23:45)</span>
+                    <span class="ticker-item">✨ <b>Alex_976</b> a retiré <b>20€ PayPal</b> (Hier à 22:30)</span>
+                </div>
+            </div>
+        </div>
 
         <div class="hero-banner">
             <div>
