@@ -45,7 +45,7 @@
         <div class="flex justify-between items-center mb-8 bg-sky-950/80 p-5 rounded-2xl border-2 border-amber-400 shadow-xl">
             <div>
                 <h1 class="text-2xl font-black text-amber-400 uppercase tracking-wider">🛠️ PARADISE-KDO : BACKOFFICE ADMIN</h1>
-                <p class="text-xs text-sky-200 mt-1">Panneau de contrôle global, gestion des membres et de l'économie du lagon.</p>
+                <p class="text-xs text-sky-200 mt-1">Panneau de contrôle global, gestion des membres et de l'économie du lagon. <span id="refresh-status" class="text-emerald-400 font-bold ml-2">(🔄 Synchro auto active)</span></p>
             </div>
             <div class="flex gap-3">
                 <button onclick="logoutAdmin()" class="bg-red-600 hover:bg-red-500 text-white font-black px-4 py-2 rounded-xl text-xs uppercase transition shadow">Verrouiller 🔒</button>
@@ -73,8 +73,9 @@
         </div>
 
         <div class="admin-card p-6 mb-8">
-            <h2 class="text-lg font-black text-amber-400 uppercase mb-4 flex items-center gap-2">
-                <i class="fas fa-users"></i> Gestion des Membres & Attribution de Soldes
+            <h2 class="text-lg font-black text-amber-400 uppercase mb-4 flex items-center justify-between">
+                <span><i class="fas fa-users"></i> Gestion des Membres & Attribution de Soldes</span>
+                <button onclick="loadAdminData()" class="bg-sky-600 hover:bg-sky-500 text-white text-xs px-3 py-1.5 rounded uppercase font-bold"><i class="fas fa-sync-alt mr-1"></i> Actualiser</button>
             </h2>
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-xs text-sky-100">
@@ -87,13 +88,17 @@
                             <th class="p-3 text-right">Actions Rapides</th>
                         </tr>
                     </thead>
-                    <tbody id="users-table-body" class="divide-y divide-sky-900/50"></tbody>
+                    <tbody id="users-table-body" class="divide-y divide-sky-900/50">
+                        <tr><td colspan="5" class="p-4 text-center text-sky-300">Chargement des membres...</td></tr>
+                    </tbody>
                 </table>
             </div>
         </div>
     </div>
 
     <script>
+        let refreshInterval = null;
+
         if (sessionStorage.getItem('paradise_admin_auth') === 'true') {
             unlockAdmin();
         }
@@ -128,10 +133,19 @@
             document.getElementById('auth-screen').classList.add('hidden');
             document.getElementById('admin-content').classList.remove('hidden');
             loadAdminData();
+
+            // 🔄 Auto-refresh toutes les 60 secondes (1 minute)
+            if (!refreshInterval) {
+                refreshInterval = setInterval(() => {
+                    loadAdminData();
+                }, 60000);
+            }
         }
 
         function logoutAdmin() {
             sessionStorage.removeItem('paradise_admin_auth');
+            if (refreshInterval) clearInterval(refreshInterval);
+            refreshInterval = null;
             document.getElementById('admin-content').classList.add('hidden');
             document.getElementById('auth-screen').classList.remove('hidden');
             document.getElementById('admin-password-input').value = '';
@@ -148,6 +162,12 @@
 
                     const tbody = document.getElementById('users-table-body');
                     tbody.innerHTML = '';
+                    
+                    if (data.users.length === 0) {
+                        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-sky-300">Aucun membre inscrit pour le moment.</td></tr>`;
+                        return;
+                    }
+
                     data.users.forEach(u => {
                         tbody.innerHTML += `
                             <tr class="hover:bg-sky-900/30 transition">
