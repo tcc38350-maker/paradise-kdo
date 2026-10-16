@@ -144,7 +144,7 @@
                 <h2 class="text-lg font-black text-amber-400 uppercase mb-2 text-center">🎟️ VALIDATION DE VOS CODES DE RECHARGE</h2>
                 <p class="text-xs text-sky-200 text-center mb-4">Entrez vos codes reçus par email après votre achat PayPal (un code par ligne) :</p>
                 <div class="max-w-xl mx-auto space-y-3">
-                    <textarea id="recharge-codes-input" rows="3" placeholder="Entrez un code par ligne (ex: PARADISE-MINI-XXXX)" class="w-full bg-slate-950 border border-sky-500/50 rounded-lg p-3 text-sm text-white focus:border-amber-400 outline-none"></textarea>
+                    <textarea id="recharge-codes-input" rows="3" placeholder="Entrez un code par ligne (ex: PARA... ou para+...)" class="w-full bg-slate-950 border border-sky-500/50 rounded-lg p-3 text-sm text-white focus:border-amber-400 outline-none"></textarea>
                     <button onclick="validerCodes()" class="w-full bg-amber-400 hover:bg-amber-300 text-slate-950 font-black p-3 rounded-lg text-xs uppercase shadow transition">Valider le/les codes 🚀</button>
                     <div id="code-result-msg" class="hidden text-center text-xs font-bold p-2 rounded"></div>
                 </div>
@@ -153,7 +153,7 @@
             <!-- SECTION OFFRES -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                <!-- PARADISE MINI (Couleurs inversées : Doré / Ambre) -->
+                <!-- PARADISE MINI -->
                 <div class="card-lagon border-amber-400 flex flex-col justify-between">
                     <div>
                         <div class="flex justify-between items-center mb-3 border-b border-amber-400/30 pb-2">
@@ -218,7 +218,7 @@
                     </div>
                 </div>
 
-                <!-- PARADISE + (Couleurs inversées : Bleu Lagon) -->
+                <!-- PARADISE + -->
                 <div class="card-lagon border-sky-400 flex flex-col justify-between">
                     <div>
                         <div class="flex justify-between items-center mb-3 border-b border-sky-500/30 pb-2">
@@ -326,23 +326,38 @@
                 return;
             }
 
-            try {
-                const res = await fetch('/api/add-ticket', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username: currentUser })
-                });
-                const data = await res.json();
-                if(data.success) {
-                    msgBox.innerText = "🎉 Code validé avec succès ! Vos tickets et parties ont été crédités.";
-                    msgBox.className = "text-center text-xs font-bold p-2 rounded bg-emerald-950/80 text-emerald-400 border border-emerald-500 block";
-                    document.getElementById('recharge-codes-input').value = '';
-                } else {
-                    msgBox.innerText = "❌ Code invalide ou déjà utilisé.";
-                    msgBox.className = "text-center text-xs font-bold p-2 rounded bg-red-950/80 text-red-400 border border-red-500 block";
+            const lines = codesText.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+            let successCount = 0;
+            let lastErrorMsg = "";
+
+            for (let code of lines) {
+                try {
+                    const res = await fetch('/api/use-recharge-code', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ username: currentUser, code })
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        successCount++;
+                    } else {
+                        lastErrorMsg = data.message;
+                    }
+                } catch(err) {
+                    lastErrorMsg = "Erreur de communication avec le serveur.";
                 }
-            } catch(err) {
-                console.error(err);
+            }
+
+            if (successCount > 0 && lastErrorMsg === "") {
+                msgBox.innerText = `🎉 ${successCount} code(s) validé(s) avec succès ! Vos tickets et points ont été crédités.`;
+                msgBox.className = "text-center text-xs font-bold p-2 rounded bg-emerald-950/80 text-emerald-400 border border-emerald-500 block";
+                document.getElementById('recharge-codes-input').value = '';
+            } else if (successCount > 0) {
+                msgBox.innerText = `⚠️ ${successCount} code(s) validé(s), mais certains codes ont échoué (${lastErrorMsg}).`;
+                msgBox.className = "text-center text-xs font-bold p-2 rounded bg-amber-500/20 text-amber-300 border border-amber-400 block";
+            } else {
+                msgBox.innerText = `❌ Erreur : ${lastErrorMsg || "Code incorrect ou déjà utilisé."}`;
+                msgBox.className = "text-center text-xs font-bold p-2 rounded bg-red-950/80 text-red-400 border border-red-500 block";
             }
         }
     </script>
