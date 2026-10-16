@@ -6,7 +6,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Mot de passe admin sécurisé côté serveur (change "ton_vrai_mot_de_passe" par ce que tu veux)
+// Mot de passe admin sécurisé côté serveur
 const ADMIN_PASSWORD = "ton_vrai_mot_de_passe";
 
 app.post('/api/admin/login', (req, res) => {
@@ -16,6 +16,7 @@ app.post('/api/admin/login', (req, res) => {
     }
     res.status(401).json({ success: false, message: "Mot de passe incorrect" });
 });
+
 // Base de données simulée en mémoire
 const users = {
     "Timothée": { 
@@ -26,6 +27,45 @@ const users = {
         tickets: 10 
     }
 };
+
+// === API BACKOFFICE ADMIN ===
+app.get('/api/admin/stats', (req, res) => {
+    try {
+        const usersList = Object.values(users);
+        let totalPoints = usersList.reduce((acc, u) => acc + (u.points || 0), 0);
+        let totalTickets = usersList.reduce((acc, u) => acc + (u.tickets || 0), 0);
+
+        res.json({
+            success: true,
+            totalUsers: usersList.length,
+            totalPoints,
+            totalTickets,
+            users: usersList
+        });
+    } catch (err) {
+        console.error("Erreur API Admin stats:", err);
+        res.status(500).json({ success: false, message: "Erreur serveur interne" });
+    }
+});
+
+app.post('/api/admin/modify-user', (req, res) => {
+    const { pseudo, addPoints, addTickets } = req.body;
+    if (users[pseudo]) {
+        users[pseudo].points += (addPoints || 0);
+        users[pseudo].tickets += (addTickets || 0);
+        return res.json({ success: true, user: users[pseudo] });
+    }
+    res.status(404).json({ success: false, message: "Utilisateur non trouvé" });
+});
+
+app.post('/api/admin/delete-user', (req, res) => {
+    const { pseudo } = req.body;
+    if (users[pseudo]) {
+        delete users[pseudo];
+        return res.json({ success: true });
+    }
+    res.status(404).json({ success: false, message: "Utilisateur non trouvé" });
+});
 
 // Route d'inscription
 app.post('/api/register', (req, res) => {
