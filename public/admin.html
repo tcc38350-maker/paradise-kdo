@@ -24,11 +24,11 @@
 </head>
 <body class="p-6">
 
-    <!-- ÉCRAN DE VERROUILLAGE ADMIN (Masqué par défaut) -->
+    <!-- ÉCRAN DE VERROUILLAGE ADMIN -->
     <div id="auth-screen" class="fixed inset-0 bg-[#022330] z-50 flex items-center justify-center p-4">
         <div class="admin-card p-8 max-w-md w-full border-amber-400 text-center">
             <h2 class="text-2xl font-black text-amber-400 uppercase mb-2">🔒 ACCÈS RESTREINT</h2>
-            <p class="text-xs text-sky-200 mb-6">Zone réservée au fondateur de Paradise-Kdo.</p>
+            <p class="text-xs text-sky-200 mb-6">Zone sécurisée côté serveur.</p>
             <form onsubmit="checkAdminPassword(event)" class="space-y-4">
                 <input type="password" id="admin-password-input" placeholder="Mot de passe admin" class="w-full bg-slate-950 border border-sky-500/50 rounded-lg p-3 text-sm text-white text-center focus:border-amber-400 outline-none" required>
                 <button type="submit" class="w-full bg-amber-400 hover:bg-amber-300 text-slate-950 font-black p-3 rounded-lg text-xs uppercase transition shadow">Se connecter</button>
@@ -40,9 +40,8 @@
         </div>
     </div>
 
-    <!-- CONTENU DU BACKOFFICE (Masqué tant que non connecté) -->
+    <!-- CONTENU DU BACKOFFICE -->
     <div id="admin-content" class="max-w-7xl mx-auto hidden">
-        <!-- En-tête Admin -->
         <div class="flex justify-between items-center mb-8 bg-sky-950/80 p-5 rounded-2xl border-2 border-amber-400 shadow-xl">
             <div>
                 <h1 class="text-2xl font-black text-amber-400 uppercase tracking-wider">🛠️ PARADISE-KDO : BACKOFFICE ADMIN</h1>
@@ -54,7 +53,6 @@
             </div>
         </div>
 
-        <!-- Statistiques Globales -->
         <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-8">
             <div class="admin-card p-5 border-amber-400">
                 <span class="text-xs text-amber-300 font-bold uppercase">Membres Inscrits</span>
@@ -74,7 +72,6 @@
             </div>
         </div>
 
-        <!-- Gestion des Membres -->
         <div class="admin-card p-6 mb-8">
             <h2 class="text-lg font-black text-amber-400 uppercase mb-4 flex items-center gap-2">
                 <i class="fas fa-users"></i> Gestion des Membres & Attribution de Soldes
@@ -90,32 +87,39 @@
                             <th class="p-3 text-right">Actions Rapides</th>
                         </tr>
                     </thead>
-                    <tbody id="users-table-body" class="divide-y divide-sky-900/50">
-                        <!-- Injection dynamique via JS -->
-                    </tbody>
+                    <tbody id="users-table-body" class="divide-y divide-sky-900/50"></tbody>
                 </table>
             </div>
         </div>
     </div>
 
     <script>
-        // 🔑 MODIFIE TON MOT DE PASSE ADMIN ICI :
-        const ADMIN_SECRET = "mon_pass_secret"; 
-
-        // Vérification au chargement si déjà connecté dans la session du navigateur
         if (sessionStorage.getItem('paradise_admin_auth') === 'true') {
             unlockAdmin();
         }
 
-        function checkAdminPassword(e) {
+        async function checkAdminPassword(e) {
             e.preventDefault();
-            const inputVal = document.getElementById('admin-password-input').value;
+            const password = document.getElementById('admin-password-input').value;
             const errBox = document.getElementById('auth-error');
 
-            if (inputVal === ADMIN_SECRET) {
-                sessionStorage.setItem('paradise_admin_auth', 'true');
-                unlockAdmin();
-            } else {
+            try {
+                const res = await fetch('/api/admin/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password })
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    sessionStorage.setItem('paradise_admin_auth', 'true');
+                    unlockAdmin();
+                } else {
+                    errBox.classList.remove('hidden');
+                }
+            } catch(err) {
+                console.error(err);
+                errBox.innerText = "Erreur de connexion au serveur";
                 errBox.classList.remove('hidden');
             }
         }
