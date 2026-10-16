@@ -23,14 +23,35 @@
     </style>
 </head>
 <body class="p-6">
-    <div class="max-w-7xl mx-auto">
+
+    <!-- ÉCRAN DE VERROUILLAGE ADMIN (Masqué par défaut) -->
+    <div id="auth-screen" class="fixed inset-0 bg-[#022330] z-50 flex items-center justify-center p-4">
+        <div class="admin-card p-8 max-w-md w-full border-amber-400 text-center">
+            <h2 class="text-2xl font-black text-amber-400 uppercase mb-2">🔒 ACCÈS RESTREINT</h2>
+            <p class="text-xs text-sky-200 mb-6">Zone réservée au fondateur de Paradise-Kdo.</p>
+            <form onsubmit="checkAdminPassword(event)" class="space-y-4">
+                <input type="password" id="admin-password-input" placeholder="Mot de passe admin" class="w-full bg-slate-950 border border-sky-500/50 rounded-lg p-3 text-sm text-white text-center focus:border-amber-400 outline-none" required>
+                <button type="submit" class="w-full bg-amber-400 hover:bg-amber-300 text-slate-950 font-black p-3 rounded-lg text-xs uppercase transition shadow">Se connecter</button>
+            </form>
+            <p id="auth-error" class="text-xs text-red-400 font-bold mt-3 hidden">Mot de passe incorrect !</p>
+            <div class="mt-6">
+                <a href="/" class="text-xs text-sky-400 hover:underline">← Retourner sur le site</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTENU DU BACKOFFICE (Masqué tant que non connecté) -->
+    <div id="admin-content" class="max-w-7xl mx-auto hidden">
         <!-- En-tête Admin -->
         <div class="flex justify-between items-center mb-8 bg-sky-950/80 p-5 rounded-2xl border-2 border-amber-400 shadow-xl">
             <div>
                 <h1 class="text-2xl font-black text-amber-400 uppercase tracking-wider">🛠️ PARADISE-KDO : BACKOFFICE ADMIN</h1>
                 <p class="text-xs text-sky-200 mt-1">Panneau de contrôle global, gestion des membres et de l'économie du lagon.</p>
             </div>
-            <a href="/" class="bg-amber-400 hover:bg-amber-300 text-slate-950 font-black px-4 py-2 rounded-xl text-xs uppercase transition shadow">Retour au Site 🌴</a>
+            <div class="flex gap-3">
+                <button onclick="logoutAdmin()" class="bg-red-600 hover:bg-red-500 text-white font-black px-4 py-2 rounded-xl text-xs uppercase transition shadow">Verrouiller 🔒</button>
+                <a href="/" class="bg-amber-400 hover:bg-amber-300 text-slate-950 font-black px-4 py-2 rounded-xl text-xs uppercase transition shadow">Retour au Site 🌴</a>
+            </div>
         </div>
 
         <!-- Statistiques Globales -->
@@ -78,6 +99,40 @@
     </div>
 
     <script>
+        // 🔑 MODIFIE TON MOT DE PASSE ADMIN ICI :
+        const ADMIN_SECRET = "mon_pass_secret"; 
+
+        // Vérification au chargement si déjà connecté dans la session du navigateur
+        if (sessionStorage.getItem('paradise_admin_auth') === 'true') {
+            unlockAdmin();
+        }
+
+        function checkAdminPassword(e) {
+            e.preventDefault();
+            const inputVal = document.getElementById('admin-password-input').value;
+            const errBox = document.getElementById('auth-error');
+
+            if (inputVal === ADMIN_SECRET) {
+                sessionStorage.setItem('paradise_admin_auth', 'true');
+                unlockAdmin();
+            } else {
+                errBox.classList.remove('hidden');
+            }
+        }
+
+        function unlockAdmin() {
+            document.getElementById('auth-screen').classList.add('hidden');
+            document.getElementById('admin-content').classList.remove('hidden');
+            loadAdminData();
+        }
+
+        function logoutAdmin() {
+            sessionStorage.removeItem('paradise_admin_auth');
+            document.getElementById('admin-content').classList.add('hidden');
+            document.getElementById('auth-screen').classList.remove('hidden');
+            document.getElementById('admin-password-input').value = '';
+        }
+
         async function loadAdminData() {
             try {
                 const res = await fetch('/api/admin/stats');
@@ -131,8 +186,6 @@
                 if (data.success) { loadAdminData(); }
             } catch(err) { console.error(err); }
         }
-
-        loadAdminData();
     </script>
 </body>
 </html>
