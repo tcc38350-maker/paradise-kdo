@@ -226,15 +226,46 @@
                                 <td class="p-3 text-sky-300">${u.email}</td>
                                 <td class="p-3 font-black text-amber-400">${u.points}</td>
                                 <td class="p-3 font-black text-sky-200">${u.tickets}</td>
-                                <td class="p-3 text-right space-x-2">
-                                    <button onclick="modifyUser('${u.pseudo}', 100, 5)" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-2.5 py-1.5 rounded uppercase text-[10px] shadow">+100 Pts / +5 Tkt</button>
-                                    <button onclick="deleteUser('${u.pseudo}')" class="bg-red-600 hover:bg-red-500 text-white font-bold px-2.5 py-1.5 rounded uppercase text-[10px] shadow">Supprimer</button>
+                                <td class="p-3 text-right space-x-1">
+                                    <button onclick="editUserManuel('${u.pseudo}', ${u.points}, ${u.tickets})" class="bg-sky-600 hover:bg-sky-500 text-white font-bold px-2 py-1.5 rounded uppercase text-[10px] shadow"><i class="fas fa-edit"></i> Éditer</button>
+                                    <button onclick="modifyUser('${u.pseudo}', 100, 5)" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-2 py-1.5 rounded uppercase text-[10px] shadow">+100 Pts / +5 Tkt</button>
+                                    <button onclick="deleteUser('${u.pseudo}')" class="bg-red-600 hover:bg-red-500 text-white font-bold px-2 py-1.5 rounded uppercase text-[10px] shadow">Supprimer</button>
                                 </td>
                             </tr>
                         `;
                     });
                 }
             } catch(err) { console.error("Erreur chargement admin:", err); }
+        }
+
+        // Fonction pour éditer manuellement les points et les tickets
+        async function editUserManuel(pseudo, pointsActuels, ticketsActuels) {
+            const saisiePoints = prompt(`Modifier les points totaux pour ${pseudo} :`, pointsActuels);
+            if (saisiePoints === null) return;
+
+            const saisieTickets = prompt(`Modifier les tickets totaux pour ${pseudo} :`, ticketsActuels);
+            if (saisieTickets === null) return;
+
+            try {
+                const res = await fetch('/api/admin/update-user', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        username: pseudo, 
+                        points: saisiePoints, 
+                        tickets: saisieTickets 
+                    })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    loadAdminData();
+                } else {
+                    alert("❌ Erreur : " + data.message);
+                }
+            } catch(err) {
+                console.error(err);
+                alert("Erreur de communication avec le serveur.");
+            }
         }
 
         async function modifyUser(pseudo, addPoints, addTickets) {
