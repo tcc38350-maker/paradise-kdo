@@ -28,7 +28,7 @@
             color: #fef08a;
             font-size: 0.75rem;
             font-weight: 700;
-            padding: 0.35rem 1rem;
+            padding: 0.5rem 1rem;
             text-align: center;
         }
         header {
@@ -114,16 +114,18 @@
 <body>
 
     <div class="page-overlay">
+        <!-- TOP BAR IDENTIQUE À L'ACCUEIL -->
         <div class="top-bar">
-            <span>🌊 Page officielle de recharges Paradise-Kdo</span>
+            <span>🌊 Bienvenue sur Paradise-Kdo.com, le Lagon des Jeux & des Cadeaux ! • Inscrits : 12 450 • Cadeaux Envoyés : 85 200 € • Connectés : 42</span>
         </div>
 
         <header>
             <div class="header-banner">
                 <div class="logo-box">
                     <h1 class="logo-title">🌴 PARADISE-KDO 🦜</h1>
-                    <p class="logo-sub">BOUTIQUE DES RECHARGES</p>
+                    <p class="logo-sub">BOUTIQUE DES RECHARGES & PARTIES</p>
                 </div>
+                <!-- AUTH ZONE IDENTIQUE À L'ACCUEIL AVEC POINTS ET TICKETS -->
                 <div id="auth-zone"></div>
             </div>
             <!-- MENU COMPLET -->
@@ -187,7 +189,7 @@
                             <div class="flex justify-between items-center bg-slate-950/60 p-2.5 rounded-lg border border-amber-500/30">
                                 <div class="flex flex-col">
                                     <span class="text-xs font-bold">50 (0.28€ / unité)</span>
-                                    <span class="text-[10px] text-emerald-400 font-bold">Remise : +7%</span>
+                                    <span class="text-[10px] text-emerald-400 font-bold">🔥 Remise : +7%</span>
                                 </div>
                                 <div class="flex items-center gap-3">
                                     <span class="text-sm font-black text-amber-400">13,99 €</span>
@@ -197,7 +199,7 @@
                             <div class="flex justify-between items-center bg-slate-950/60 p-2.5 rounded-lg border border-amber-500/30">
                                 <div class="flex flex-col">
                                     <span class="text-xs font-bold">100 (0.28€ / unité)</span>
-                                    <span class="text-[10px] text-emerald-400 font-bold">Remise : +7%</span>
+                                    <span class="text-[10px] text-emerald-400 font-bold">🔥 Remise : +7%</span>
                                 </div>
                                 <div class="flex items-center gap-3">
                                     <span class="text-sm font-black text-amber-400">27,99 €</span>
@@ -207,7 +209,7 @@
                             <div class="flex justify-between items-center bg-slate-950/60 p-2.5 rounded-lg border border-amber-500/30">
                                 <div class="flex flex-col">
                                     <span class="text-xs font-bold">500 (0.26€ / unité)</span>
-                                    <span class="text-[10px] text-amber-300 font-extrabold">Remise : +13%</span>
+                                    <span class="text-[10px] text-amber-300 font-extrabold">⚡ Méga Remise : +13%</span>
                                 </div>
                                 <div class="flex items-center gap-3">
                                     <span class="text-sm font-black text-amber-400">129,99 €</span>
@@ -245,7 +247,7 @@
                             <div class="flex justify-between items-center bg-slate-950/60 p-2.5 rounded-lg border border-sky-500/30">
                                 <div class="flex flex-col">
                                     <span class="text-xs font-bold">30 (0.66€ / unité)</span>
-                                    <span class="text-[10px] text-emerald-400 font-bold">Remise : +6%</span>
+                                    <span class="text-[10px] text-emerald-400 font-bold">🔥 Remise : +6%</span>
                                 </div>
                                 <div class="flex items-center gap-3">
                                     <span class="text-sm font-black text-amber-400">19,99 €</span>
@@ -255,7 +257,7 @@
                             <div class="flex justify-between items-center bg-slate-950/60 p-2.5 rounded-lg border border-sky-500/30">
                                 <div class="flex flex-col">
                                     <span class="text-xs font-bold">50 (0.66€ / unité)</span>
-                                    <span class="text-[10px] text-emerald-400 font-bold">Remise : +6%</span>
+                                    <span class="text-[10px] text-emerald-400 font-bold">🔥 Remise : +6%</span>
                                 </div>
                                 <div class="flex items-center gap-3">
                                     <span class="text-sm font-black text-amber-400">32,99 €</span>
@@ -265,7 +267,7 @@
                             <div class="flex justify-between items-center bg-slate-950/60 p-2.5 rounded-lg border border-sky-500/30">
                                 <div class="flex flex-col">
                                     <span class="text-xs font-bold">100 (0.66€ / unité)</span>
-                                    <span class="text-[10px] text-emerald-400 font-bold">Remise : +6%</span>
+                                    <span class="text-[10px] text-emerald-400 font-bold">🔥 Remise : +6%</span>
                                 </div>
                                 <div class="flex items-center gap-3">
                                     <span class="text-sm font-black text-amber-400">65,99 €</span>
@@ -275,7 +277,7 @@
                             <div class="flex justify-between items-center bg-slate-950/60 p-2.5 rounded-lg border border-sky-500/30">
                                 <div class="flex flex-col">
                                     <span class="text-xs font-bold">250 (0.62€ / unité)</span>
-                                    <span class="text-[10px] text-amber-300 font-extrabold">Remise : +11%</span>
+                                    <span class="text-[10px] text-amber-300 font-extrabold">⚡ Méga Remise : +11%</span>
                                 </div>
                                 <div class="flex items-center gap-3">
                                     <span class="text-sm font-black text-amber-400">154,99 €</span>
@@ -293,12 +295,30 @@
     <script>
         let currentUser = localStorage.getItem('paradise_user') || null;
 
-        function renderHeader() {
+        // Fonction pour charger et afficher le header identique à l'accueil avec pseudo, points et tickets en temps réel
+        async function renderHeader() {
             const authZone = document.getElementById('auth-zone');
-            if (currentUser) {
-                authZone.innerHTML = `<span class="text-xs font-bold text-amber-300 bg-slate-950/80 p-2.5 rounded-xl border border-sky-400/50 shadow">👤 ${currentUser}</span>`;
-            } else {
+            if (!currentUser) {
                 authZone.innerHTML = `<a href="/" class="bg-amber-400 text-slate-950 font-black px-4 py-2 rounded-lg text-xs uppercase shadow border border-amber-200">Connexion requise</a>`;
+                return;
+            }
+
+            try {
+                const res = await fetch(`/api/user/${currentUser}`);
+                const userData = await res.json();
+                if (userData && !userData.message) {
+                    authZone.innerHTML = `
+                        <div class="flex items-center gap-3 bg-slate-950/80 px-4 py-2 rounded-xl border border-sky-400/50 shadow">
+                            <span class="text-xs font-bold text-white"><i class="fas fa-user text-amber-400 mr-1"></i> ${userData.pseudo}</span>
+                            <span class="text-xs font-black text-amber-400"><i class="fas fa-coins mr-1"></i> ${userData.points} Pts</span>
+                            <span class="text-xs font-bold text-sky-200"><i class="fas fa-ticket-alt mr-1"></i> ${userData.tickets} Tkt</span>
+                        </div>
+                    `;
+                } else {
+                    authZone.innerHTML = `<span class="text-xs font-bold text-amber-300 bg-slate-950/80 p-2.5 rounded-xl border border-sky-400/50">👤 ${currentUser}</span>`;
+                }
+            } catch(e) {
+                authZone.innerHTML = `<span class="text-xs font-bold text-amber-300 bg-slate-950/80 p-2.5 rounded-xl border border-sky-400/50">👤 ${currentUser}</span>`;
             }
         }
         renderHeader();
@@ -340,6 +360,8 @@
                     const data = await res.json();
                     if (data.success) {
                         successCount++;
+                        // Met à jour localement ou recharge le header pour afficher les nouveaux points/tickets
+                        renderHeader();
                     } else {
                         lastErrorMsg = data.message;
                     }
