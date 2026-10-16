@@ -33,7 +33,7 @@
             color: #fef08a;
             font-size: 0.75rem;
             font-weight: 700;
-            padding: 0.4rem 1rem;
+            padding: 0.35rem 1rem;
             text-align: center;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
@@ -114,38 +114,24 @@
             text-shadow: none;
         }
 
-        /* Bandeau Défilant des Retraits (Ticker) */
+        /* Bandeau Défilant des Retraits (Plus fin et épuré) */
         .ticker-container {
-            background: linear-gradient(90deg, #0284c7 0%, #0369a1 50%, #0284c7 100%);
-            border-bottom: 3px solid #fbbf24;
+            background: linear-gradient(90deg, #0284c7 0%, #0369a1 100%);
+            border-bottom: 2px solid #fbbf24;
             border-top: 1px solid #38bdf8;
-            color: #fff;
-            font-size: 0.8rem;
-            font-weight: 700;
-            padding: 0.5rem 0;
+            color: #fef08a;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.3rem 0;
             overflow: hidden;
             white-space: nowrap;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.3);
-            display: flex;
-            align-items: center;
-        }
-
-        .ticker-label {
-            background: #fbbf24;
-            color: #0f172a;
-            font-black: 900;
-            padding: 0.5rem 1rem;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            font-weight: 900;
-            z-index: 10;
-            box-shadow: 4px 0 10px rgba(0,0,0,0.3);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
         }
 
         .ticker-wrapper {
             display: inline-block;
             white-space: nowrap;
-            animation: marquee 25s linear infinite;
+            animation: marquee 30s linear infinite;
         }
 
         .ticker-item {
@@ -321,21 +307,18 @@
             </nav>
         </header>
 
-        <!-- BANDEAU DÉFILANT DES DERNIERS RETRAITS (TICKER) -->
+        <!-- BANDEAU DÉFILANT FIN ET ÉPURÉ -->
         <div class="ticker-container">
-            <div class="ticker-label"><i class="fas fa-trophy text-amber-300 mr-1"></i> DERNIERS GAINS :</div>
-            <div class="overflow-hidden flex-1 relative">
-                <div class="ticker-wrapper">
-                    <span class="ticker-item">🎉 <b>Timothée</b> a retiré <b>50€ PayPal</b> (Aujourd'hui à 02:15)</span>
-                    <span class="ticker-item">🌴 <b>Julie974</b> a gagné <b>1000 Points</b> sur la Grille Coco (Aujourd'hui à 02:02)</span>
-                    <span class="ticker-item">🎁 <b>Kévin_92</b> a commandé une <b>Carte Amazon 25€</b> (Hier à 23:45)</span>
-                    <span class="ticker-item">✨ <b>Alex_976</b> a retiré <b>20€ PayPal</b> (Hier à 22:30)</span>
-                    <!-- Duplication pour effet de boucle fluide infini -->
-                    <span class="ticker-item">🎉 <b>Timothée</b> a retiré <b>50€ PayPal</b> (Aujourd'hui à 02:15)</span>
-                    <span class="ticker-item">🌴 <b>Julie974</b> a gagné <b>1000 Points</b> sur la Grille Coco (Aujourd'hui à 02:02)</span>
-                    <span class="ticker-item">🎁 <b>Kévin_92</b> a commandé une <b>Carte Amazon 25€</b> (Hier à 23:45)</span>
-                    <span class="ticker-item">✨ <b>Alex_976</b> a retiré <b>20€ PayPal</b> (Hier à 22:30)</span>
-                </div>
+            <div class="ticker-wrapper">
+                <span class="ticker-item"><i class="fas fa-trophy text-amber-300 mr-1"></i> <b>Timothée</b> a retiré <b>50€ PayPal</b> (Aujourd'hui à 02:15)</span>
+                <span class="ticker-item"><i class="fas fa-gem text-sky-300 mr-1"></i> <b>Julie974</b> a gagné <b>1000 Points</b> sur la Grille Coco (Aujourd'hui à 02:02)</span>
+                <span class="ticker-item"><i class="fas fa-gift text-amber-300 mr-1"></i> <b>Kévin_92</b> a commandé une <b>Carte Amazon 25€</b> (Hier à 23:45)</span>
+                <span class="ticker-item"><i class="fas fa-trophy text-amber-300 mr-1"></i> <b>Alex_976</b> a retiré <b>20€ PayPal</b> (Hier à 22:30)</span>
+                <!-- Boucle infinie fluide -->
+                <span class="ticker-item"><i class="fas fa-trophy text-amber-300 mr-1"></i> <b>Timothée</b> a retiré <b>50€ PayPal</b> (Aujourd'hui à 02:15)</span>
+                <span class="ticker-item"><i class="fas fa-gem text-sky-300 mr-1"></i> <b>Julie974</b> a gagné <b>1000 Points</b> sur la Grille Coco (Aujourd'hui à 02:02)</span>
+                <span class="ticker-item"><i class="fas fa-gift text-amber-300 mr-1"></i> <b>Kévin_92</b> a commandé une <b>Carte Amazon 25€</b> (Hier à 23:45)</span>
+                <span class="ticker-item"><i class="fas fa-trophy text-amber-300 mr-1"></i> <b>Alex_976</b> a retiré <b>20€ PayPal</b> (Hier à 22:30)</span>
             </div>
         </div>
 
