@@ -72,6 +72,35 @@
             </div>
         </div>
 
+        <!-- GÉNÉRATEUR DE CODES DE RECHARGE -->
+        <div class="admin-card p-6 mb-8 border-amber-400">
+            <h2 class="text-lg font-black text-amber-400 uppercase mb-4 flex items-center gap-2">
+                <i class="fas fa-ticket-alt"></i> Générateur de Codes de Recharge
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+                <div>
+                    <label class="text-xs font-semibold text-sky-200">Type de Pack</label>
+                    <select id="gen-type" class="w-full bg-slate-950 border border-sky-500/50 rounded-lg p-2.5 text-sm text-white mt-1">
+                        <option value="mini">Paradise Mini (25 tickets + 100 Pts)</option>
+                        <option value="plus">Paradise + (50 tickets + 250 Pts)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-xs font-semibold text-sky-200">Quantité (1 à 100)</label>
+                    <input type="number" id="gen-count" min="1" max="100" value="1" class="w-full bg-slate-950 border border-sky-500/50 rounded-lg p-2.5 text-sm text-white mt-1">
+                </div>
+                <div class="flex items-end">
+                    <button onclick="generateCodes()" class="w-full bg-amber-400 hover:bg-amber-300 text-slate-950 font-black p-2.5 rounded-lg text-xs uppercase shadow transition">Générer les codes ⚡</button>
+                </div>
+            </div>
+
+            <!-- Zone d'affichage des codes générés -->
+            <div id="generated-codes-container" class="hidden mt-4">
+                <label class="text-xs font-semibold text-emerald-400 mb-1 block">Codes générés avec succès (copiez-les) :</label>
+                <textarea id="generated-codes-output" rows="5" readonly class="w-full bg-slate-950 border border-emerald-500/50 rounded-lg p-3 text-xs text-emerald-300 font-mono select-all"></textarea>
+            </div>
+        </div>
+
         <div class="admin-card p-6 mb-8">
             <h2 class="text-lg font-black text-amber-400 uppercase mb-4 flex items-center justify-between">
                 <span><i class="fas fa-users"></i> Gestion des Membres & Attribution de Soldes</span>
@@ -134,7 +163,6 @@
             document.getElementById('admin-content').classList.remove('hidden');
             loadAdminData();
 
-            // 🔄 Auto-refresh toutes les 60 secondes (1 minute)
             if (!refreshInterval) {
                 refreshInterval = setInterval(() => {
                     loadAdminData();
@@ -149,6 +177,29 @@
             document.getElementById('admin-content').classList.add('hidden');
             document.getElementById('auth-screen').classList.remove('hidden');
             document.getElementById('admin-password-input').value = '';
+        }
+
+        async function generateCodes() {
+            const type = document.getElementById('gen-type').value;
+            const count = document.getElementById('gen-count').value;
+
+            try {
+                const res = await fetch('/api/admin/generate-codes', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ type, count })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    const container = document.getElementById('generated-codes-container');
+                    const output = document.getElementById('generated-codes-output');
+                    output.value = data.codes.join('\n');
+                    container.classList.remove('hidden');
+                }
+            } catch(err) {
+                console.error(err);
+                alert("Erreur lors de la génération des codes.");
+            }
         }
 
         async function loadAdminData() {
